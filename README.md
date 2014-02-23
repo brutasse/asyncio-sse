@@ -17,9 +17,9 @@ class Handler(sse.Handler):
     @asyncio.coroutine
     def handle_request(self):
         yield from asyncio.sleep(2)
-	self.send('foo')
+        self.send('foo')
         yield from asyncio.sleep(2)
-	self.send('bar', event='wakeup')
+        self.send('bar', event='wakeup')
 
 start_server = sse.serve(Handler, 'localhost', 8888)
 asyncio.get_event_loop().run_until_complete(start_server)
@@ -32,7 +32,7 @@ Validating incoming requests:
 class Handler(sse.Handler):
     def validate_sse(self):
         super().validate_sse()
-	# use self.request / self.payload
+        # use self.request / self.payload
         if not self.request.path.startswith('/live'):
             raise sse.SseException()
 ```
