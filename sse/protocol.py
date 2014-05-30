@@ -30,11 +30,12 @@ class SseServerProtocol(aiohttp.server.ServerHttpProtocol):
 
     @asyncio.coroutine
     def handle_request(self, request, payload):
-        handler = self.handler_class(self, request, payload)
+        response = Response(self.writer, 200)
+        handler = self.handler_class(self, request, response, payload)
         try:
             handler.validate_sse()
         except exceptions.SseException as e:
-            response = Response(self.transport, e.status)
+            response.status = e.status
             if e.headers:
                 for header in e.headers:
                     response.add_header(*header)
