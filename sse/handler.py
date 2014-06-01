@@ -1,24 +1,22 @@
 import asyncio
 
 from . import exceptions
-from .protocol import Response
 
 __all__ = ['Handler']
 
 
 class Handler:
-    def __init__(self, protocol, request, payload):
+    def __init__(self, protocol, request, response, payload):
         self.transport = protocol.transport
         self.request = request
+        self.response = response
         self.payload = payload
 
     def prepare_response(self):
-        response = Response(self.transport, 200)
-        response.add_header('Content-Type', 'text/event-stream')
-        response.add_header('Cache-Control', 'no-cache')
-        response.add_header('Connection', 'keep-alive')
-        response.send_headers()
-        self.response = response
+        self.response.add_header('Content-Type', 'text/event-stream')
+        self.response.add_header('Cache-Control', 'no-cache')
+        self.response.add_header('Connection', 'keep-alive')
+        self.response.send_headers()
 
     def send(self, *args, **kwargs):
         return self.response.send(*args, **kwargs)
