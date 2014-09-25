@@ -16,7 +16,6 @@ class Handler:
         self.response.add_header('Content-Type', 'text/event-stream')
         self.response.add_header('Cache-Control', 'no-cache')
         self.response.add_header('Connection', 'keep-alive')
-        self.response.send_headers()
 
     def send(self, *args, **kwargs):
         return self.response.send(*args, **kwargs)

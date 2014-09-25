@@ -44,5 +44,6 @@ class SseServerProtocol(aiohttp.server.ServerHttpProtocol):
             return
 
         handler.prepare_response()
+        response.send_headers()
         yield from handler.handle_request()
         handler.response.write_eof()
